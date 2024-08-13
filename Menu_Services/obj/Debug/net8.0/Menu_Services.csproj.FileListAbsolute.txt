@@ -1,0 +1,15 @@
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\bin\Debug\net8.0\Menu_Services.deps.json
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\bin\Debug\net8.0\Menu_Services.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\bin\Debug\net8.0\Menu_Services.pdb
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\bin\Debug\net8.0\Menu_Server.Domain.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\bin\Debug\net8.0\Menu_Server.Domain.pdb
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.csproj.AssemblyReference.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.AssemblyInfoInputs.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.AssemblyInfo.cs
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.csproj.CoreCompileInputs.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.csproj.CopyComplete
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\refint\Menu_Services.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\Menu_Services.pdb
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Services\obj\Debug\net8.0\ref\Menu_Services.dll

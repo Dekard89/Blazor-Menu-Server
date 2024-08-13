@@ -1,0 +1,14 @@
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\bin\Debug\net8.0\Menu_Server.Domain.deps.json
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\bin\Debug\net8.0\Menu_Server.Domain.runtimeconfig.json
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\bin\Debug\net8.0\Menu_Server.Domain.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\bin\Debug\net8.0\Menu_Server.Domain.pdb
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.csproj.AssemblyReference.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.AssemblyInfoInputs.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.AssemblyInfo.cs
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.csproj.CoreCompileInputs.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\refint\Menu_Server.Domain.dll
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.pdb
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\Menu_Server.Domain.genruntimeconfig.cache
+C:\Users\dmitr\source\repos\Menu_Server\Menu_Server.Domain\obj\Debug\net8.0\ref\Menu_Server.Domain.dll

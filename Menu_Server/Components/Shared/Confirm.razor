@@ -1,0 +1,43 @@
+﻿
+@if (_visability)
+{
+    <div class="modal-backdrop show"></div>
+
+      <div class="modal fade show" id="modal" tabindex="-1" role="dialog"
+        aria-labelledby="modal" aria-hidden="true" style="display:block">
+
+         <div class="modal-dialog" role="document">
+
+             <div class="modal-content text-center">
+
+                 <div class="modal-header">
+                     <h5 class="modal-title">@ModalTitle</h5>
+                     <button @onclick="OnCancel" class="btn-close"><span aria-hidden="true">&times;</span></button>
+                 </div>
+
+                 <div class="modal-body">
+                     @ModalContent
+                 </div>
+
+                 <div class="modal-footer">
+                     <button @onclick="OnConfirm" type="button" class="btn-outline-danger text-center">Delete</button>
+                     <button @onclick="OnCancel" type="button" class="btn-outline-primary">Cancel</button>
+                 </div>
+             </div>
+        </div>
+
+     </div>
+}
+
+
+@code {
+    [Parameter] public string ModalTitle { get; set; }
+    [Parameter] public RenderFragment ModalContent {get;set;}
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    private bool _visability;
+
+    public void Show() => _visability = true;
+
+    public void Hide() => _visability = false;
+}

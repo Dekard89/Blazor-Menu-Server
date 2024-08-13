@@ -1,0 +1,30 @@
+﻿<div class="top-row ps-3 ">
+    <div class="container-fluid">
+        
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable navBG" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="recipe/edit/0">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> <span>Add Recipe</span>
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ingredients/create">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> <span>Add Ingredients</span>
+            </NavLink>
+        </div>
+    </nav>
+</div>
+

@@ -1,0 +1,73 @@
+﻿@inject NavigationManager _navManager
+
+
+    <div class=" m-2">
+        <div class="borderCard card text-center ">
+            @if (ShowButtons)
+            {
+                <span class="text-end">
+                    <button @onclick="@(()=>OnClose.InvokeAsync())" class="btn-close">&times;</button>
+                </span>
+            }
+            <div class="card-header">
+                <h4 class="">@Recipe.Name</h4>
+            </div>
+            <div class="card-body bg-transparent">
+
+                <img src="@_imageData" alt="" class="img-fluid" />
+                <h5>Time to cook: @Recipe.TimeToCook</h5>
+                <h5>Category: @Recipe.Category</h5>
+            </div>
+            @if (ShowButtons)
+            {
+                <div class="card-footer">
+                    <button @onclick=@(()=>ShowCompound()) class="btn-outline-primary m-1">Show compound</button>
+                    <button @onclick=@(()=>EditRecipe()) class="btn-outline-secondary m-1">Edit</button>
+                    <button @onclick="@(()=>DeleteRecipe.InvokeAsync(Recipe))" class="btn-outline-danger m-1">Delete</button>
+                    <button @onclick="EditCompound" class="btn-outline-success ">Edit compound</button>
+                    @if (_showIngredient)
+                    {
+                        @if (Recipe.Ingredients.Count > 0)
+                        {
+                            <ListIngredients Ingredients="@Recipe.Ingredients" />
+                        }
+                        @if (Recipe.Ingredients.Count == 0)
+                        {
+                            <h5>Compound is empty yet</h5>
+                        }
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+@code {
+
+    [Parameter] public Recipe Recipe { get; set; }
+    [Parameter] public bool ShowButtons { get; set; }
+    [Parameter] public EventCallback<Recipe> DeleteRecipe { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    private string _imageData;
+
+    private bool _showIngredient = false;
+
+    private void ShowCompound()
+    {
+        _showIngredient = !_showIngredient;
+    }
+    private void EditRecipe()
+    {
+        _navManager.NavigateTo($"/recipe/edit/{Recipe.Id}");
+    }
+   
+    private void EditCompound()
+    {
+        _navManager.NavigateTo($"/recipe/compound/{Recipe.Id}");
+    }
+    protected override void OnParametersSet()
+    {
+         _imageData = $"data: image/jpeg;base64,{Recipe.Image}";
+    }
+}

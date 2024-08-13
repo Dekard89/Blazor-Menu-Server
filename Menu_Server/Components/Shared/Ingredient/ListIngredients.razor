@@ -1,0 +1,36 @@
+﻿
+<table class="table table-striped table-hover fs-6">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Status</th>
+            @if (ShowTotal)
+            {
+                <th scope="col">Total</th>
+            }
+            <th scope="col">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Ingredients)
+        {
+            <IngredientCard ingredient="item" ShowTotal=ShowTotal ActionFromIngredient="ActionFromIngredient" ButtonTitle="@ButtonTitle"/>
+             
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter] public List<Ingredient> Ingredients { get; set; }
+    [Parameter] public bool ShowTotal { get; set; }
+
+    [Parameter] public string ButtonTitle { get; set; }
+
+    [Parameter] public EventCallback<Ingredient> ActionFromIngredient { get; set; }
+
+    
+
+    private bool _showButton;
+ 
+ }     

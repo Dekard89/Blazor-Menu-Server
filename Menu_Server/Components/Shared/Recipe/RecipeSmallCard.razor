@@ -1,0 +1,31 @@
+﻿
+
+    <div class="col-2">
+        <div class="card customCard ">
+            <div class="card-body">
+                <button @onclick="()=>OnClick.InvokeAsync(Recipe)">
+                    <img class="smallImage zoom" src="@_imageData" />
+                </button>
+                <div>
+                    <h4>@Recipe.Name</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@code {
+    [Parameter] public Recipe Recipe { get; set; }
+
+    [Parameter] public EventCallback<Recipe> OnClick { get; set; }
+
+
+
+    private string _imageData;
+
+    protected override void OnParametersSet()
+    {
+        _imageData = $"data: image/jpeg;base64,{Recipe.Image}";
+    }
+}

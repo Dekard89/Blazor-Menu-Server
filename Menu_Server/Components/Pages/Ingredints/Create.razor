@@ -1,0 +1,116 @@
+﻿@inject IRepository<Ingredient> _repository
+@inject NavigationManager _navManger
+@page "/ingredients/create"
+
+<div class="row bs-popover-bottom">
+
+    <h1 class="text-center bs-tooltip-bottom">Create new ingredient</h1>
+
+    <div class="col-4 border-1 me-3">
+        <div class="text-primary mb-3">
+            @if(messege is not null)
+            {
+                <h4>@messege</h4>
+            }
+        </div>
+
+        <EditForm Model=@ingredient OnValidSubmit="AddIngredient" FormName="EditIngredient">
+            <DataAnnotationsValidator />
+            <div class="mt-3 bs">
+                <label class="fs-4">Enter name: </label>
+                <InputText class="form-control border-1" @bind-Value=@ingredient.Name />
+                <ValidationMessage For="@(()=>ingredient.Name)" />
+            </div>
+            <div class="mt-3">
+                <label class="fs-4">Is Requred</label>
+                <InputCheckbox class="form-check-input" @bind-Value="ingredient.IsRequred" />
+                <ValidationMessage For="()=>ingredient.IsRequred" />
+            </div>
+            <div class="mt-3">
+                <label class="fs-4"><h4>Quantity :</h4></label>
+                <InputNumber class="form-control" @bind-Value="ingredient.Qty" />
+                <ValidationMessage For="()=>ingredient.Qty" />
+            </div>
+            <div class="mt-3">
+                <label class="fs-4">Price :</label>
+                <InputNumber class="form-control" @bind-Value="ingredient.Coast" />
+                <ValidationMessage For="()=> ingredient.Coast" />
+            </div>
+            <div class="text-start mt-3">
+                <button class="btn-outline-success">Save</button>
+            </div>
+
+        </EditForm>
+    </div>
+    <div class="col-1">
+        <Confirm ModalTitle="Confirmation" OnCancel="CancelDelete" OnConfirm="ConfirmDelete" @ref=confirm>
+            <ModalContent >
+                <h5>@_deletedIngredient.Name will be deleted</h5>
+                <h5>Are you sure ?</h5>
+            </ModalContent>
+        </Confirm>
+    </div>
+    <div class="col-6 text-end">
+        @if(_ingredients is not null)
+        {
+           <ListIngredients Ingredients=@_ingredients ShowTotal=true ActionFromIngredient="DeleteIngredient" ButtonTitle="Delete"/>
+           
+        }
+    </div>
+    
+</div>
+
+
+@code {
+    [SupplyParameterFromForm]
+    public Ingredient ingredient { get; set; } = new();
+
+    private List<Ingredient> _ingredients;
+
+    private Ingredient _deletedIngredient;
+
+    Confirm confirm;
+
+    private string? messege;
+
+    private async void AddIngredient()
+    {
+        _repository.AddAsync(ingredient);
+
+        _ingredients.Add(ingredient);
+
+        StateHasChanged();
+
+        ingredient = new();
+
+        messege = $"{ingredient.Name} is aded in database";
+
+    }
+    protected override async void OnInitialized()
+    {
+        _ingredients = await _repository.GetAll();
+    }
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
+    }
+    private void DeleteIngredient(Ingredient del)
+    {
+        _deletedIngredient = del;
+        confirm.Show();
+    }
+    private void CancelDelete()
+    {
+        _deletedIngredient = null;
+        confirm.Hide();
+    }
+    private void ConfirmDelete()
+    {
+        _repository.DeleteAsync(_deletedIngredient);
+        _ingredients.Remove(_deletedIngredient);
+        confirm.Hide();
+        _deletedIngredient = null;
+        InvokeAsync(StateHasChanged);
+        _navManger.NavigateTo("ingredients/create");
+    }
+}

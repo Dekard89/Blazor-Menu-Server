@@ -1,0 +1,117 @@
+﻿@inject IRepository<Ingredient> _repository
+@page "/invoice"
+
+
+<div class="row">
+    <div class="col-9">
+        
+        
+            <ListIngredients Ingredients="_invoice" ShowTotal="true" ButtonTitle="Delete"  ActionFromIngredient="OnRemove"/>
+
+        @if (_invoice.Count > 0)
+        {
+            <div class="text-end">
+                <button @onclick="OnSave" class="btn-outline-primary">Save</button>
+            </div>
+        }
+            
+        
+        @if(_selectedIngredient is not null)
+        {
+           <EditForm Model="Quntity" FormName="InputQty" OnValidSubmit="Submit">
+                <div class="form-floating">
+                    @_selectedIngredient.Name
+                    <span>
+                        <InputNumber @bind-Value="Quntity" />
+                    </span>
+                    <ValidationMessage For="(()=>_selectedIngredient.Qty)" />
+                    <span><button class="btn-outline-primary" @onclick="Submit">Add</button></span>
+                </div>
+           </EditForm>
+        }
+        @if(_selectedIngredient is null)
+        {
+            <div >
+                <input type="text" placeholder="@_placeholder" @bind-value="SearchString" @bind-value:event="oninput" class="form-control"
+                       />
+               <ListSmallIngredient Ingredients="SearchIngredient()"ChooseIngredient="ChooseIngredient"/>
+            </div>
+        }
+        
+
+    </div>
+   
+</div>
+
+@code {
+    [SupplyParameterFromForm] public int Quntity { get; set; }
+
+    private Ingredient _selectedIngredient = null;
+
+    private List<Ingredient> _stock;
+
+    private List<Ingredient> _invoice = new();
+
+    public string SearchString{ get; set; } = String.Empty;
+    private string _placeholder = "Search....";
+    protected override async Task OnInitializedAsync()
+    {
+        _stock = await _repository.GetAll();
+
+    }
+
+    private void OnRemove( Ingredient ingredient)
+    {
+        _invoice.Remove(ingredient);
+
+
+    }
+
+
+    private void Submit()
+    {
+        _selectedIngredient.Qty = Quntity;
+        _invoice.Add(_selectedIngredient);
+        _selectedIngredient = null;
+        Quntity = 0;
+        SearchString = String.Empty;
+    }
+    private void ChooseIngredient(Ingredient ingredient)
+    {
+        if (ingredient is not null)
+        {
+            _selectedIngredient = ingredient.Clone() as Ingredient;
+        }
+
+
+
+
+    }
+    private List<Ingredient> SearchIngredient()
+    {
+        if (!String.IsNullOrWhiteSpace(SearchString))
+        {
+            return _stock.Where(x => x.Name.Contains(SearchString)).ToList();
+        }
+        else
+        {
+            return _stock;
+        }
+
+    }
+    private void OnSave()
+    {
+        foreach(var item in _stock)
+        {
+            if (_invoice.Any(x => x.Id == item.Id))
+            {
+                item.Qty += _invoice.First(x => x.Id == item.Id).Qty;
+            }
+        }
+        _repository.UpdateRangeAsync(_stock);
+
+        _invoice = new();
+    }
+
+
+}

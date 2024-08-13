@@ -1,0 +1,38 @@
+﻿
+<tr class="bs-popover-start fs-6" @onmouseover="@((MouseEventArgs)=>OnMouseOver(MouseEventArgs))"
+    @onmouseleave=@((MouseEventArgs)=>OnMouseLeave(MouseEventArgs)) >
+    
+    <td scope="col">@ingredient.Name</td>
+    <td scope="col">@ingredient.Coast</td>
+    <td scope="col">@ingredient.Qty </td>
+    <td scope="col">@(ingredient.IsRequred.Equals(true)? "Requred":"Extra" )</td>
+    @if(ShowTotal)
+    {
+        <td scope="col">@(ingredient.Qty * ingredient.Coast)</td>
+    }
+    
+    @if (_showButton)
+    {
+        <td  scope="col"><button @onclick=@((Ingredient)=>ActionFromIngredient.InvokeAsync(ingredient))
+            class="btn-outline-danger">@ButtonTitle</button></td>
+    }
+
+    
+</tr>
+
+@code {
+    [EditorRequired]
+    [Parameter] public Ingredient ingredient { get; set; }
+
+    [Parameter] public bool ShowTotal { get; set; }
+
+    [Parameter] public string ButtonTitle { get; set; }
+
+    [Parameter] public EventCallback<Ingredient> ActionFromIngredient { get; set; }
+
+    private bool _showButton = false;
+
+    private void OnMouseOver(MouseEventArgs e) => _showButton = true;
+
+    private void OnMouseLeave(MouseEventArgs e) => _showButton = false;
+}

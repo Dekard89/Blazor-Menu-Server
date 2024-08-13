@@ -1,0 +1,83 @@
+﻿@inject IRepository<Recipe> _recipeRepository
+@inject IRepository<Ingredient> _ingredientRepository
+@inject NavigationManager _navmanager
+
+@page "/recipe/compound/{RecipeId:int}"
+<div class="row text-center customBorder">
+    
+    
+       <ListIngredients Ingredients="_showingIngredient" ShowTotal=false ButtonTitle="Clear" ActionFromIngredient="EndShowDetails"/>
+    
+</div>
+<div class="row border-2 mt-5">
+    <div class="col-5 fs-5 border-2">
+        <h4 class="customBS text-center">All ingredients</h4>
+       <Dropzone Items="_stock" InstantReplace="true" TItem="Ingredient" OnItemDrop=@((i)=>_paylord=i) Class="conteiner-overflow" >
+            <div class="border-1 border-dark">
+                <IngredientSmallCard Ingredient="@context" OnDragStart="OnDragStart" OnClick="ShowDetails" />
+            </div>
+       </Dropzone>
+    </div>
+    <div class="col-5 fs-5 border-2">
+        <h4 class="customBS text-center">@_recipe.Name ingredients</h4>
+        <Dropzone Items="_recipe.Ingredients" InstantReplace="true" TItem="Ingredient" OnItemDrop=@((i)=>_paylord=i) Class="h-100 conteiner-overflow" >
+           <div class="border-1 border-dark">
+
+                <IngredientSmallCard Ingredient="@context"OnClick="ShowDetails" />
+           </div>
+        </Dropzone>
+        @if (_recipe.Ingredients.Count > 0)
+        {
+            <div>
+                <button class="btn-outline-primary customBS" @onclick="OnSave">Save</button>
+                <button class="btn-outline-secondary customBS" @onclick="OnClear">Clear</button>
+            </div>
+        }
+        
+    </div>
+</div>
+
+@code {
+    [Parameter] public int RecipeId { get; set; }
+
+    private Recipe _recipe;
+    private List<Ingredient> _stock;
+    private Ingredient _paylord { get; set; }
+    private List<Ingredient?> _showingIngredient = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _stock = await _ingredientRepository.GetAll();
+        _recipe = await _recipeRepository.GetById(RecipeId);
+    }
+    private void OnDragStart(Ingredient ingredient)
+    {
+        _paylord = ingredient;
+
+    }
+    private void ShowDetails(Ingredient ingredient)
+    {
+        if (_showingIngredient.Count == 0)
+        {
+            _showingIngredient.Add(ingredient);
+        }
+        else
+        {
+            _showingIngredient.Clear();
+            _showingIngredient.Add(ingredient);
+        }
+    }   
+    private void EndShowDetails()
+    {
+        _showingIngredient.Clear();
+    }
+    private async Task OnSave()
+    {
+        await _recipeRepository.UpdateAsync(_recipe);
+        _navmanager.NavigateTo("/");
+    }
+    private void OnClear()
+    {
+        _recipe.Ingredients.Clear();
+    }
+}

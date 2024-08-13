@@ -1,0 +1,31 @@
+﻿
+
+<div>
+    <ul class="@SetOverflow()">
+        @if (Ingredients.Count == 0)
+        {
+            <li>Compound is empty</li>
+            <li>Drop here</li>
+        }
+        @if (Ingredients.Count > 0)
+        {
+            @foreach (var item in Ingredients)
+            {
+                <IngredientSmallCard Ingredient="item" OnClick="ChooseIngredient"/>
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public List<Ingredient> Ingredients { get; set; }
+    [Parameter] public EventCallback<Ingredient> ChooseIngredient { get; set; }
+    [Parameter] public bool Overflow { get; set; }
+    
+
+    private string SetOverflow()
+    {
+        var result = Overflow ? "conteiner-overflow" : "";
+        return result;
+    }
+}

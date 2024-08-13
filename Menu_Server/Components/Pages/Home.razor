@@ -1,0 +1,81 @@
+﻿@inject IRepository<Recipe> _repository
+
+@page "/"
+
+
+
+<div class="row mb-4 border-1">
+   <div class="col-6">
+        <input type="text" class="form-control" placeholder="Search ....." @bind-value="@SearchString" 
+        @bind-value:event="oninput"/>
+   </div>
+   <Confirm ModalTitle="Confirmation" OnConfirm="OnConfirm" OnCancel="OnCancel" @ref="confirm">
+       <ModalContent>
+           <h5>@_deletedRecipe.Name will be deleted</h5>
+           <h5>Are you sure</h5>
+       </ModalContent>
+   </Confirm>
+    @if (_showingRecipe is not null)
+    {
+        <div class="col-6 border-2">
+            <RecipeCard Recipe="_showingRecipe" ShowButtons=true  DeleteRecipe="OnDelete" OnClose="OnClose"/>
+        </div>
+    }
+</div>
+<div class="row">
+    
+        @foreach(var item in GetRecipes())
+        {
+            <RecipeSmallCard Recipe="item" OnClick="ChangeRecipe"/>
+        }
+    
+</div>
+
+
+
+@code{
+    private List<Recipe> _recipes;
+
+    private Recipe _showingRecipe;
+
+    private Recipe _deletedRecipe;
+
+    private Confirm confirm;
+
+    public string SearchString { get; set; } = String.Empty;
+
+    protected override async Task OnInitializedAsync()=> _recipes= await _repository.GetAll();
+
+    private void ChangeRecipe(Recipe recipe)
+    {
+        _showingRecipe = recipe;
+    }
+    private List<Recipe> GetRecipes()
+    {
+        return String.IsNullOrWhiteSpace(SearchString)? _recipes:
+        _recipes.Where(x=>x.Name.Contains(SearchString)).ToList();
+    }
+    private void OnDelete(Recipe recipe)
+    {
+        _deletedRecipe = recipe;
+        confirm.Show();
+    }
+    private void OnClose()
+    {
+        _showingRecipe = null;
+    }
+    private async Task OnConfirm()
+    {
+        await _repository.DeleteAsync(_deletedRecipe);
+        _recipes.Remove(_deletedRecipe);
+        confirm.Hide();
+        StateHasChanged();
+        _deletedRecipe = null;
+
+    }
+    private void OnCancel()
+    {
+        confirm.Hide();
+        _deletedRecipe = null;
+    }
+}

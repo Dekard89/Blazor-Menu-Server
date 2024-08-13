@@ -1,0 +1,20 @@
+﻿
+<li class="@_bgColor" @onmouseover="OnMouseOver" @onmouseleave="OnMouseLeve"
+@onclick="@(()=>OnClick.InvokeAsync(Ingredient))" @ondragstart="(()=>OnDragStart
+.InvokeAsync(Ingredient))">@Ingredient.Name
+</li>
+
+@code {
+    [Parameter] public Ingredient Ingredient { get; set; }
+
+    [Parameter] public EventCallback<Ingredient> OnClick { get; set; }
+
+    [Parameter] public EventCallback<Ingredient> OnDragStart { get; set; }
+
+    private string _bgColor = string.Empty;
+
+    private void OnMouseOver() => _bgColor = "bg-success";
+
+    private void OnMouseLeve() => _bgColor = string.Empty;
+
+}

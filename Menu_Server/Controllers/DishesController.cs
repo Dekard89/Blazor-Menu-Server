@@ -1,8 +1,12 @@
 ﻿using Menu_Repository;
 using Menu_Server.BLL;
+using Menu_Server.BLL.Contracts;
+using Menu_Server.BLL.DTO;
 using Menu_Server.Domain;
+using Menu_Server.Domain.Migrations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Menu_Server.Controllers
 {
@@ -11,39 +15,37 @@ namespace Menu_Server.Controllers
     public class DishesController : ControllerBase
     {
         private readonly DishSender _sender;
-        private readonly IRepository<Recipe> _repository;
 
-        public DishesController(DishSender dishSender, IRepository<Recipe> repository)
+        private readonly IMemoryCache _cache;
+        public DishesController(DishSender dishSender, IMemoryCache memoryCache)
         {
-                _sender = dishSender;
-            _repository = repository;
+                _sender = dishSender; 
+            _cache = memoryCache;
         }
 
-        [HttpGet]
-        [Route("get")]
-        public async Task<List<DishModel>> GetDishes()
+        //[HttpGet]
+        //[Route("get")]
+        //public async Task<List<DishModel>> GetDishes()
+        //{
+            
+        //}
+        [HttpGet("request")]
+        public async Task<List<DishModel>> GetAllDishes([FromQuery]DishRequest request) 
         {
-            var recipes= await _repository.GetAll();
-            var dishes = _sender.GetDishModelsWihoutExtras(recipes);
-            dishes.AddRange(_sender.GetDishModelsWihotExtras(recipes));
-            return dishes;
-        }
-        [HttpGet]
-        [Route("getall")]
-        public async Task<List<DishModel>> GetAllDishes() 
-        {
-            var recipes = await _repository.GetAll();
-            var dishes = _sender.GetDishModelsWihoutExtras(recipes);
-            dishes.AddRange(_sender.GetDishModelsWihotExtras(recipes));
-            dishes.AddRange(_sender.GetNotAvailable(recipes));
-            return dishes;
-        }
+            var result= await _sender.GetMenu(request);
 
-        [HttpPost]
+            return result;
+        }
+        
+
+        [HttpPost("post")]
        
-        public IActionResult PostOrder( [FromBody]List<DishModel> dishModels)
+        public IActionResult PostOrder( [FromBody] OrderDTO dto)
         {
-            return Ok(dishModels);
+            var list= new List<OrderDTO>();
+            list.Add(dto);
+            _cache.Set("all", list, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+            return Ok();
         }
     }
 }

@@ -45,9 +45,6 @@ namespace Menu_Server.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Coast")
-                        .HasColumnType("double precision");
-
                     b.Property<bool>("IsRequred")
                         .HasColumnType("boolean");
 
@@ -55,6 +52,9 @@ namespace Menu_Server.Domain.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("Qty")
                         .HasColumnType("integer");

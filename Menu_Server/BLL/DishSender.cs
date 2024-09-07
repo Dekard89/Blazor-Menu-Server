@@ -1,46 +1,32 @@
-﻿using Menu_Server.Domain;
-using Menu_Server.Domain.Migrations;
+﻿using System.Linq;
+using Menu_Repository;
+using Menu_Server.BLL.Contracts;
+using Menu_Server.BLL.DTO;
+using Menu_Server.Domain;
+
 
 namespace Menu_Server.BLL
 {
     public class DishSender
     {
-        private readonly DishDirector _director;
+        private readonly IRepository<Recipe> _repository;
 
-        
+        public DishSender(IRepository<Recipe> repository)
+        {
+            _repository = repository;
+        }
+        public async Task<List<DishModel>> GetMenu( DishRequest dishRequest )
+        {
+            var recipes = await _repository.GetAll();
 
-        public DishSender(DishDirector director)
-        {
-                _director=director;
-        }
-        public List<DishModel> GetDishModelsWihoutExtras(List<Recipe> recipes)
-        {
-            return  recipes.Where(r => r.CheckRequred().Equals(true))
-                .Where(x=>x.Ingredients.Any(i=>i.IsRequred.Equals(false).Equals(false)))
-                .Select(x =>
-            {
-                _director.SetRecipe(x);
-                return _director.BuildWihoutExtras();
-            }).ToList();
-        }
-        public List<DishModel> GetDishModelsWihotExtras(List<Recipe> recipes)
-        {
-            return recipes.Where(r => r.CheckRequred().Equals(true))
-                .Where(x => x.Ingredients.Any(i => i.IsRequred.Equals(false).Equals(true)))
-                .Select(x =>
-                {
-                    _director.SetRecipe(x);
-                    return _director.BuildWithExtras();
-                }).ToList();
-        }
-        public List<DishModel> GetNotAvailable(List<Recipe> recipes)
-        {
-            return recipes.Where(r=>r.CheckRequred().Equals(false))
-                .Select(x =>
-                {
-                    _director.SetRecipe(x);
-                    return _director.BuildNotAvailable();
-                }).ToList() ;
+            var categoryRecipe=recipes.Where(x=>x.Category==dishRequest.Category).ToList();
+
+            var result = dishRequest.Search == "all" ? categoryRecipe : categoryRecipe.Where(x=>x.Name.ToLower()
+            .Contains(dishRequest.Search));
+
+            return result.Select(x => Mapper.GetDish(x))
+                .Where(x=>x.IsAvailable==true) .ToList();
+            
         }
     }
 }

@@ -3,12 +3,12 @@
     @onmouseleave=@((MouseEventArgs)=>OnMouseLeave(MouseEventArgs)) >
     
     <td scope="col">@ingredient.Name</td>
-    <td scope="col">@ingredient.Coast</td>
+    <td scope="col">@ingredient.Price</td>
     <td scope="col">@ingredient.Qty </td>
     <td scope="col">@(ingredient.IsRequred.Equals(true)? "Requred":"Extra" )</td>
     @if(ShowTotal)
     {
-        <td scope="col">@(ingredient.Qty * ingredient.Coast)</td>
+        <td scope="col">@(ingredient.Qty * ingredient.Price)</td>
     }
     
     @if (_showButton)

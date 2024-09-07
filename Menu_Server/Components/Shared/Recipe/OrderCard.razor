@@ -1,0 +1,29 @@
+﻿
+@if (Order is not null)
+{
+    <div class="card customCard">
+
+        <div class="card-header">
+            <h3>Order from table @Order.TableNumber </h3>
+        </div>
+        <div class="card-body">
+            @foreach (var item in Recipes)
+            {
+                <div>
+                    <RecipeSmallCard Recipe="item"/>
+
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <button @onclick="(()=>OnClick.InvokeAsync(Order))" class="btn-outline-primary">Catch order</button>
+        </div>
+    </div>
+}
+@code {
+    [Parameter] public OrderDTO Order { get; set; }
+
+    [Parameter] public List<Recipe> Recipes { get; set; }
+
+    [Parameter] public EventCallback<OrderDTO> OnClick { get; set; }
+}

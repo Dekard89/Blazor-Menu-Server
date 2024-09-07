@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Menu_Server.Domain
 {
-    public class Recipe : BaseEntity
+    public class Recipe : BaseEntity,ICloneable
     {
         public TimeSpan TimeToCook { get; set; }
        
@@ -22,10 +22,18 @@ namespace Menu_Server.Domain
 
         public List<Ingredient> Ingredients { get; set; } = new();
 
-        public bool CheckRequred()
+        public object Clone()
         {
-             return Ingredients.Where(i=>i.IsRequred.Equals(true)).Any(x=>x.Qty>0);
+            return new Recipe()
+            {
+                Id = this.Id,
+                Description = this.Description,
+                Image = this.Image,
+                Name = this.Name,
+                Category = this.Category,
+                TimeToCook = this.TimeToCook
+
+            };
         }
-        
     }
 }

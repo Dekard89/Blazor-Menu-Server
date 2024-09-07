@@ -1,0 +1,50 @@
+﻿@page "/orders"
+@inject IMemoryCache _cache
+@inject OrderReceiver _receiver
+@inject IRepository<Recipe> _repository
+
+
+<div class="text-center">
+    <button @onclick="GetOrder" class="btn-outline-info"> REFRESH</button>
+</div>
+@foreach(var item in _orders)
+{
+    <div class="col-4">
+        <OrderCard Order="item" Recipes="_receiver.GetOrderedRecipe(item,_recipes)" OnClick="CatchOrder"/>
+    </div>
+}
+
+@code {
+    private List<OrderDTO> _orders = new();
+
+    private OrderDTO _order = new();
+
+    private List<Recipe> _recipes;
+
+    protected override void OnParametersSet()
+    {
+        GetOrder();
+    }
+    private void GetOrder()
+    {
+        List<OrderDTO> list = new();
+
+        _cache.TryGetValue("all", out list );
+
+        _orders.AddRange(list);
+
+        _cache.Remove(list);
+
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        _recipes = await _repository.GetAll();
+    }
+    private async Task CatchOrder(OrderDTO order)
+    {
+        await _receiver.WriteOfIngredients(order,_recipes);
+
+        _orders.Remove(order);
+    }
+}

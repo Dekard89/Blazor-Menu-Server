@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDBContext>( options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddBlazorDragDrop();
 
 builder.Services.AddControllers();
@@ -25,11 +27,9 @@ builder.Services.AddScoped<IRepository<Recipe>, RecipeRepository>();
 
 builder.Services.AddScoped<IRepository<Ingredient>, IngredientRepository>();
 
-builder.Services.AddScoped<IDishBuilder, DishModelBuilder>();
-
-builder.Services.AddScoped<DishDirector>();
-
 builder.Services.AddScoped<DishSender>();
+
+builder.Services.AddScoped<OrderReceiver>();
 
 var app = builder.Build();
 
